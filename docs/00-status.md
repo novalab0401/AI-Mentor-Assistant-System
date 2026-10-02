@@ -22,13 +22,14 @@
 - 회사에서 받을 것: 샘플 지도안, 모의수업 녹화와 전문가 평가, 차시별 오개념 ([03](03-product-plan.md))
 - 동의·보관·편향 모니터링·재평가 정책 → [policy-confirmation](todo/policy-confirmation.md)
 - 로컬 우선, 품질 미달 시 API 전환: 기준과 허용 데이터 범위 미정 → [policy-confirmation](todo/policy-confirmation.md). 금지 규칙은 아직 유지 중
-- git 원격 저장소 미연결 (다른 PC 작업 전 필요)
+- git 원격: `github.com/Broogun/Novarlab-AI-system` (비공개, `main`). 스킬은 저장소에 포함하지 않으므로 새 PC에서 직접 설치
 
 ## 다음 액션
 1. 공통 스키마 v0 구현 완료(퀴즈 확인만 남음) → [schema-v0](todo/schema-v0.md). 다음은 루브릭 가안([rubric-draft](todo/rubric-draft.md))과 담당자 확인 질문 전달
 2. 범위 확인 요청 발송 (대기 시간이 있으므로 병행)
 
 ## 최근 변경
+- 261002: 첫 커밋과 GitHub 푸시 (`main`, 46개 파일). `.serena/`는 `.gitignore`에 추가
 - 261001: 스키마 v0 구현(packages/core, 테스트 28개), 02-specs·05-coding-rules 갱신, human-review·벤치마킹 TODO 정리
 - 261001: 담당자 요구 흐름 반영 (03 재구성, TODO 추가: 수업 가이드, 클릭 입력)
 - 260930: 원본 재검토 반영 (AGENTS 원칙 2개, 01 studio 정정, policy-confirmation 신설, TODO 분리)

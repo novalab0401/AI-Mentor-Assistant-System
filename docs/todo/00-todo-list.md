@@ -18,7 +18,7 @@
 | todo | P1 | 로컬 모델 품질 기준 정의와 후보 모델 비교 eval (API 전환 판단 기준) | |
 | todo | P1 | 도메인 용어집 채우기 | |
 | todo | P1 | 개발 환경 세팅 (5090 노트북 CUDA·vLLM·faster-whisper 호환 확인) | |
-| todo | P1 | git 원격(비공개) 연결, 첫 커밋 | |
+| done | P1 | git 원격(비공개) 연결, 첫 커밋 (261002, `main` 푸시) | |
 | todo | P1 | 05-coding-rules.md draft 항목 확정 | |
 | todo | P2 | 자율주행 PID 가상 학생 시나리오 3~5개 (학생 반응·돌발상황 유형, 차시 선택 구조 포함) | |
 | todo | P2 | design.md 작성 (앱 착수 시) | |
