@@ -1,0 +1,23 @@
+[project]
+name = "nova-core"
+version = "0.1.0"
+description = "Nova Coach 공통 스키마 (packages/core)"
+authors = [
+    { name = "Broogun", email = "afs35331@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.9,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,10 @@
+data/*
+!data/.gitkeep
+*.wav
+*.mp3
+*.mp4
+*.m4a
+.env
+.venv/
+__pycache__/
+.serena/

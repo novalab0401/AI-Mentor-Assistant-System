@@ -1,0 +1,9 @@
+[project]
+name = "nova-coach"
+version = "0.0.0"
+description = "Nova Coach workspace root"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["packages/*"]
