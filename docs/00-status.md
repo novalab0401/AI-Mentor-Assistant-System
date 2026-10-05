@@ -2,7 +2,7 @@
 
 새 세션은 `AGENTS.md` 다음에 이 문서를 읽는다. 작업마다 갱신한다. 40줄 이내, 본문 복제 금지(링크만).
 
-- 마지막 갱신: 260930
+- 마지막 갱신: 261005
 
 ## 단계
 설계 초기. `packages/core`에 공통 스키마 v0(pydantic)와 테스트만 있다. 앱·서비스 코드는 없다.
@@ -29,6 +29,8 @@
 2. 범위 확인 요청 발송 (대기 시간이 있으므로 병행)
 
 ## 최근 변경
+- 261005: 모의수업(음성 기반) 처리 흐름 정리, ASR/측정/분류/피드백 단계별 LLM 필요 여부 명시 → [261005-1514-06-mock-lesson-pipeline](reports/261005-1514-06-mock-lesson-pipeline.md), `02-specs.md` 갱신
+- 261005: `cognitive-teacher` 스킬 사용자 레벨 설치 (`~/.claude/skills/`)
 - 261002: 첫 커밋과 GitHub 푸시 (`main`, 46개 파일). `.serena/`는 `.gitignore`에 추가
 - 261001: 스키마 v0 구현(packages/core, 테스트 28개), 02-specs·05-coding-rules 갱신, human-review·벤치마킹 TODO 정리
 - 261001: 담당자 요구 흐름 반영 (03 재구성, TODO 추가: 수업 가이드, 클릭 입력)
