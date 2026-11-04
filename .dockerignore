@@ -1,0 +1,19 @@
+# 비밀 값·개인 데이터·원본 문서는 이미지에 넣지 않는다
+.env
+.env.*
+!.env.example
+data/
+test-data/
+test-results/
+playwright-report/
+수업 지도안/
+보류/
+docs/
+tests/
+scripts/
+node_modules/
+.next/
+.git/
+.agents/
+.claude/
+*.log

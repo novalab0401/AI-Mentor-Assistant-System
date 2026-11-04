@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Nova Lab 디자인 기준값: 보라 한 가지 강조색, 흰 바탕, 얇은 선 */
+@theme {
+  --color-ink: #111827;
+  --color-body: #374151;
+  --color-sub: #525967;
+  --color-ter: #666d7b; /* 흰·연보라·사이드바 배경 모두 4.5:1 이상 */
+  --color-line: #ecedf1;
+  --color-side: #f7f7fa;
+  --color-brand: #6247d9;
+  --color-brand-dark: #4f36c4;
+  --color-brand-soft: #dcd5fb;
+  --color-tint: #f4f1fe;
+  --color-alert: #d14343;
+  --font-sans: var(--font-noto), "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+html {
+  color: var(--color-body);
+  background: #fff;
+  word-break: keep-all;
+}
+
+body {
+  font-family: var(--font-sans);
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}

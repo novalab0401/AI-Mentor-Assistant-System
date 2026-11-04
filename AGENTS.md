@@ -1,54 +1,9 @@
-# AGENTS.md — Working Agreement
+<!-- BEGIN:nextjs-agent-rules -->
 
-Nova Coach (Nova Lab AI 강사 품질 표준화 시스템) 저장소의 진입점.
-에이전트는 작업 전에 반드시 이 문서부터 읽는다.
+## This is NOT the Next.js you know
 
-## 1. 작업 흐름
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
 
-1. 요청의 목표를 한 줄로 정리한다.
-2. 읽는다: `AGENTS.md` → `docs/00-status.md` → `docs/01~05` 중 관련 문서 → `docs/todo/00-todo-list.md`
-3. 관련 TODO가 있으면 그 문서를 기준으로 진행한다. 없고 작업이 크면 TODO를 먼저 만든다.
-   TODO 파일은 바로 다음 1~2개만 상세히 쓴다. 나머지는 목록에만 둔다.
-4. 실행한다.
-5. 기록한다: 결정·변경이 있으면 `docs/reports/`에 리포트(왜 그렇게 했는지, 버린 대안 포함), 스펙이 바뀌면 `docs/02-specs.md` 갱신.
-6. 새 개념·결정이 나온 TODO는 §4에 따라 학습 문서를 만들고 읽고 퀴즈를 푼다. 통과 후 다음 단계로 간다.
-7. TODO 상태와 `docs/00-status.md`를 갱신하고, 다음 TODO를 상세화한다.
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
-전체 파일을 훑지 말고, 필요한 문서만 읽는다.
-맥락은 대화·자동 메모리가 아니라 저장소 문서에 둔다. 구두 합의도 리포트로 옮긴다.
-
-## 2. 절대 원칙
-
-- **LLM은 사실의 출처가 아니다.** 사실은 측정값·로그·문서에서 나오고, LLM은 근거를 붙여 분류·서술만 한다.
-- **모든 AI 출력에 유형을 태깅한다:** `measure`(규칙·계산) / `classify`(근거 기반 분류) / `generate`(생성).
-- **측정 가능한 것은 코드로 계산한다.** 시간 배분, 말 속도, 발문 횟수 등을 LLM에 맡기지 않는다.
-- **평가 기준은 하네스에 고정한다.** 기준을 RAG 검색 결과에 맡기지 않는다.
-- **평가는 빡세게, 훈련은 틀 안에서 유연하게.**
-- **사람이 최종 판단한다.** 강사에게 불이익이 생기는 판정은 사람 검토 없이 확정하지 않는다.
-- **학생 설문은 강사 등급·수업 투입 중단의 단독 근거가 아니다.** 개선을 위한 참고 자료로만 쓴다.
-- **시뮬레이션 결과는 참고용이다.** 실제 수업 수행 예측력이 검증되기 전에는 공식 지표와 강사 등급 결정에 쓰지 않는다.
-- **공통 스키마는 `packages/core`에서만 정의한다.** 앱에서 임의로 필드를 만들지 않는다.
-
-## 3. 데이터·보안
-
-- `data/`는 git에 올리지 않는다. 미성년자 영상·음성이 포함될 수 있다.
-- 실제 학생·강사 데이터를 예시·테스트·문서에 넣지 않는다. 필요하면 가짜 데이터를 만든다.
-- 외부 API로 수업 데이터를 보내지 않는다. 모든 모델은 로컬에서 실행한다.
-
-## 4. 학습 모드 (Cognitive Teacher 스킬)
-
-이 프로젝트는 구현과 학습을 같이 한다.
-- 필요한 스킬: `cognitive-teacher` (저장소에 포함하지 않음. 새 PC에서는 직접 설치)
-- **사용 시점:** 스키마·하네스·평가 설계처럼 이후 결정에 영향을 주는 개념이 나왔을 때, 또는 사용자가 요청할 때. 절차적·단순 작업(환경 세팅, 용어집 채우기)에는 쓰지 않는다.
-- **호출:** 주제를 한 줄로 정하고 스킬을 호출한다.
-- **저장:** `docs/learning/YYMMDD-slug.html`. 상단에 작성일과 대상 문서를 적는다.
-- **관문:** 사용자가 읽고 퀴즈를 통과한 뒤 다음 TODO를 만든다. 결과는 TODO 진행 기록에 한 줄 남긴다.
-- **제한:** 학습 문서는 참고용이며 기준 문서가 아니다. 기준은 `docs/01~05`와 이 문서다. `data/`와 실제 데이터는 입력하지 않는다. 예시는 가짜 데이터만 쓴다.
-- 학습 중 결정이 생기면 `docs/reports/`에 남긴다.
-
-## 5. 문서 규칙
-
-- 리포트 파일명: `YYMMDD-HHMM-NN-slug.md` (예: `260930-1430-01-asr-baseline.md`)
-- TODO 파일명: `slug.md`, 목록은 `00-todo-list.md`에 등록
-- 형식은 각 폴더의 `_template.md`를 따른다.
-- 문서는 짧게 유지한다. 길어지면 쪼갠다.
+<!-- END:nextjs-agent-rules -->

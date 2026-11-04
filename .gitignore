@@ -8,3 +8,27 @@ data/*
 .venv/
 __pycache__/
 .serena/
+
+# next.js
+/node_modules
+/.next/
+/out/
+*.tsbuildinfo
+.env*
+.vercel
+npm-debug.log*
+
+# tests
+/test-data/
+/test-results/
+/playwright-report/
+!.env.example
+/.next-*/
+
+# 원본 회사 자료·개인 사진은 올리지 않는다(앱은 content/의 정리본만 쓴다)
+/수업 지도안/
+KakaoTalk_*
+~$*
+# 개인 도구 설정
+/.agents/
+/.claude/
