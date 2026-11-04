@@ -1,0 +1,23 @@
+# Onpod 업로드 제외(.dockerignore와 같게 유지). 녹화·원본 자료·비밀 설정이 Onpod 빌드 서버로 가지 않게 한다.
+# 비밀 값·개인 데이터·원본 문서는 이미지에 넣지 않는다
+.env
+.env.*
+!.env.example
+data/
+test-data/
+test-results/
+playwright-report/
+수업 지도안/
+보류/
+docs/
+tests/
+scripts/
+node_modules/
+.next/
+.git/
+.agents/
+.claude/
+*.log
+KakaoTalk_*
+~$*
+.next-*/

@@ -26,9 +26,9 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
 COPY --from=build /app/next.config.ts ./next.config.ts
-RUN mkdir -p /workspace/data && chown -R node:node /workspace /app/.next
+RUN mkdir -p /workspace/data && chown -R node:node /workspace/data /app/.next
 EXPOSE 3000
-# 붙인 영구 디스크는 소유자가 root일 수 있어서, 시작할 때 root로 저장 폴더를 만들고 node 사용자에게 넘긴 뒤
+# 붙인 영구 디스크는 소유자가 root이고 /workspace가 700일 수 있어서(Onpod), /workspace에 지나갈 권한(o+x)만 열고 시작할 때 root로 저장 폴더를 만들고 node 사용자에게 넘긴 뒤
 # 앱은 node 사용자로 실행한다(setpriv). 그래도 쓸 수 없으면 녹화 제출이 전부 실패하므로 바로 알린다.
 # 외부 접속을 받으려면 0.0.0.0에 연다. 승인된 계정으로 로그인해야 들어온다(NOVALAB_DEPLOYED=1이면 LOCAL_NO_LOGIN 무시).
-CMD ["sh", "-c", "mkdir -p \"$NOVALAB_DATA_DIR\" && chown node:node \"$NOVALAB_DATA_DIR\" 2>/dev/null; exec setpriv --reuid=node --regid=node --init-groups sh -c 'if ! touch \"$NOVALAB_DATA_DIR/.write-test\" 2>/dev/null; then echo \"[novalab] $NOVALAB_DATA_DIR 에 쓸 수 없어요. 저장 공간 권한을 확인하세요.\" >&2; fi; exec node_modules/.bin/next start -H 0.0.0.0 -p $PORT'"]
+CMD ["sh", "-c", "chmod o+x /workspace 2>/dev/null; mkdir -p \"$NOVALAB_DATA_DIR\" && chown node:node \"$NOVALAB_DATA_DIR\" 2>/dev/null; exec setpriv --reuid=node --regid=node --init-groups sh -c 'if ! touch \"$NOVALAB_DATA_DIR/.write-test\" 2>/dev/null; then echo \"[novalab] $NOVALAB_DATA_DIR 에 쓸 수 없어요. 저장 공간 권한을 확인하세요.\" >&2; fi; exec node_modules/.bin/next start -H 0.0.0.0 -p $PORT'"]

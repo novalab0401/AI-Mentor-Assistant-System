@@ -15,6 +15,7 @@ const noto = Noto_Sans_KR({
 export const metadata: Metadata = {
   title: "Nova Lab",
   description: "STEM 진로 탐험대 강사 수업 준비와 모의수업 피드백",
+  robots: { index: false, follow: false }, // 내부 도구라 검색에 나오지 않게 한다
 };
 
 // 페이지들이 세션 저장소를 매 요청 읽는다.
