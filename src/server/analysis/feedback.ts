@@ -8,20 +8,35 @@ import { groundQuote, mmss, transcriptText, validTime, type Segment } from "./tr
 
 // ---------------- 프롬프트 ----------------
 
-function systemPrompt(): string {
+/** mock: 강사 혼자 녹화한 모의수업(기본). live: 학생이 있는 실제 수업 녹음. */
+export type LessonMode = "mock" | "live";
+
+const SITUATION: Record<LessonMode, string> = {
+  mock: `[상황]
+- 모의수업은 보통 강사 혼자 학생 없이 녹화한다. 강사가 학생 대답을 상상하며 되받는 말(예: "보라색이요?", "좋아요.")은 실제 학생 반응이 아니다.
+- 학생 반응이 있어야 판단할 수 있는 항목(c_adjust 이해 증거에 따른 조정, c_follow 피드백 뒤 확인 등)은 실제 학생 발언이 녹취에 없으면 score를 null로 두고, reason에 왜 판단할 수 없는지 쓴다.
+- 녹취는 음성 인식 결과라 오탈자가 있을 수 있다. 발음이 비슷해 잘못 받아 적힌 것으로 보이는 단어(예: buoyancy→"fluency", water→"order", 부력→"부럭")는 강사가 그렇게 말했다고 보지 않고, 내용 정확성 감점이나 개선점의 근거로 쓰지 않는다. 몸짓·표정·화면·판서·시범은 녹취에 없으므로 했다고도, 안 했다고도 단정하지 않는다.`,
+  live: `[상황]
+- 학생들이 실제로 참여한 수업을 교실에서 녹음한 것이다. 학생 발언은 실제 학생 반응이므로 c_adjust·c_follow 같은 항목의 근거로 쓸 수 있다.
+- 녹취의 "참석자 N"은 음성 인식이 목소리로 자동 구분한 화자 표시라 틀릴 수 있다. 누가 강사이고 누가 학생인지는 말의 내용(지시·설명·질문 vs 활동 중 대화)으로 판단하고, 확실하지 않으면 단정하지 않는다.
+- 교실 소음 속 녹음이라 인식이 안 된 구간이 많고, 활동 시간에는 발언 사이 간격이 길다. 녹취가 비어 있는 구간에 무엇을 했는지는 단정하지 않는다. 녹취가 시작되기 전 구간(도입 등)은 판단할 수 없다고 본다.
+- 강사의 행동(질문·안내·피드백·안전 지도)을 평가하는 근거로는 강사 발언만 쓴다. 학생이 한 말(예: 학생끼리 "why is it leaning?")을 강사의 질문으로 세지 않는다. 학생 발언은 참여·수행·반응의 근거로만 쓴다.
+- 수업이 한국어가 아닐 수 있다(예: 영어). quote는 녹취 원문 언어 그대로 옮기고, 나머지 피드백은 한국어 해요체로 쓴다.
+- 녹취는 음성 인식 결과라 오탈자가 있을 수 있다. 발음이 비슷해 잘못 받아 적힌 것으로 보이는 단어(예: buoyancy→"fluency", water→"order", 부력→"부럭")는 강사가 그렇게 말했다고 보지 않고, 내용 정확성 감점이나 개선점의 근거로 쓰지 않는다. 몸짓·표정·화면·판서·시범은 녹취에 없으므로 했다고도, 안 했다고도 단정하지 않는다.`,
+};
+
+function systemPrompt(mode: LessonMode = "mock"): string {
   const principles = feedbackStandard.principles
     .map((p) => [`${p.no}. ${p.title}: ${p.summary}`, ...p.points.map((x) => `   - ${x}`), p.example ? `   ${p.exampleLabel}: ${p.example.replace(/\n/g, "\n   ")}` : ""].filter(Boolean).join("\n"))
     .join("\n");
   const levels = rubric
     .map((r) => [`- ${r.id} | ${r.name} | 배점 ${r.weight}${r.critical ? " | 필수(안전)" : ""}`, ...r.levels.map((l, i) => `    ${i + 1}점: ${l}`)].join("\n"))
     .join("\n");
-  return `너는 초등 STEM 방과후 수업(진로탐험대) 강사의 모의수업을 평가하는 수업 코치다.
-강사가 녹화한 모의수업의 녹취와 해당 차시 지도안을 보고, 공통 루브릭 13개 항목으로 채점하고 근거 기반 피드백을 쓴다.
+  const what = mode === "live" ? "실제 수업" : "모의수업";
+  return `너는 초등 STEM 방과후 수업(진로탐험대) 강사의 ${what}을 평가하는 수업 코치다.
+강사의 ${what} 녹취와 해당 지도안을 보고, 공통 루브릭 13개 항목으로 채점하고 근거 기반 피드백을 쓴다.
 
-[상황]
-- 모의수업은 보통 강사 혼자 학생 없이 녹화한다. 강사가 학생 대답을 상상하며 되받는 말(예: "보라색이요?", "좋아요.")은 실제 학생 반응이 아니다.
-- 학생 반응이 있어야 판단할 수 있는 항목(c_adjust 이해 증거에 따른 조정, c_follow 피드백 뒤 확인 등)은 실제 학생 발언이 녹취에 없으면 score를 null로 두고, reason에 왜 판단할 수 없는지 쓴다.
-- 녹취는 음성 인식 결과라 오탈자가 있을 수 있다. 몸짓·표정·화면·판서·시범은 녹취에 없으므로 했다고도, 안 했다고도 단정하지 않는다.
+${SITUATION[mode]}
 
 [피드백 원칙]
 ${principles}
@@ -34,6 +49,8 @@ ${levels}
 - 4점·5점은 그 수준 기준 문장의 조건이 녹취에서 직접 확인될 때만 준다. 확인되지 않으면 그 아래 수준이다. 무난해 보인다는 이유로 4점을 주지 않는다.
 - 예: 안전 안내가 "장갑 끼고 하세요" 한 마디뿐이고 확인·점검 발언이 없으면, 안전 항목은 안내만 있고 점검이 없는 수준(2~3점)이다.
 - 지도안 단계·유의점에 적힌 행동이 녹취에 없으면 그 차이를 reason이나 planCheck에 쓴다.
+- 녹취에서 용어가 틀려 보이면, 감점하기 전에 먼저 음성 인식 오류인지 따진다. 발음이 비슷한 올바른 용어가 있고 문맥상 그 뜻이 분명하면(예: "This is called fluency"는 부력 설명 문맥이라 buoyancy, "The order pushes objects upward"는 water) 강사가 올바르게 말한 것으로 보고, 내용 정확성 감점·개선점·잘못된 용어 지적에 쓰지 않는다. 오인식인지 확실하지 않으면 그 발언으로는 판단하지 않는다.
+- 강사가 한 일(질문·설명·안내·피드백·확인·안전 지도)의 근거 quote는 강사의 발언이어야 한다. quote마다 앞의 화자 표시와 말투를 보고, 학생이 한 말이면 강사 행동의 근거로 쓰지 않는다.
 
 [작성 규칙]
 - criteria에는 13개 항목을 모두 한 번씩 넣는다.
@@ -50,7 +67,7 @@ ${levels}
 - 사람(능력·태도)이 아니라 바꿀 수 있는 행동을 말한다.`;
 }
 
-function lessonPrompt(lesson: Lesson, segs: Segment[], durationSec: number, timed: boolean): string {
+function lessonPrompt(lesson: Lesson, segs: Segment[], durationSec: number, timed: boolean, mode: LessonMode = "mock"): string {
   let at = 0;
   const steps = lesson.steps
     .map((s) => {
@@ -63,7 +80,7 @@ function lessonPrompt(lesson: Lesson, segs: Segment[], durationSec: number, time
       return lines.join("\n");
     })
     .join("\n");
-  return `[${lesson.no}차시 지도안]
+  return `[${lessonLabel(lesson)} 지도안]
 제목: ${lesson.title}
 분야: ${lesson.field} / 대상: ${lesson.target} / 수업 시간: ${lesson.durationMinutes}분
 교수 방법: ${lesson.method}
@@ -73,7 +90,7 @@ ${lesson.goals.map((g) => `- ${g}`).join("\n")}
 진행 단계:
 ${steps}
 
-[모의수업 녹취] 녹화 길이 ${mmss(durationSec)}${timed ? "" : " (시각 정보 없음: 조각 시작 시각만 있음)"}
+[${mode === "live" ? "실제 수업" : "모의수업"} 녹취] 녹화 길이 ${mmss(durationSec)}${timed ? "" : " (시각 정보 없음: 조각 시작 시각만 있음)"}
 ${transcriptText(segs)}`;
 }
 
@@ -174,10 +191,13 @@ export async function writeFeedback(input: {
   durationSec: number;
   timed: boolean;
   onStage: (stage: FeedbackStage) => Promise<void>;
+  mode?: LessonMode;
+  /** 피드백 근거 문구에 쓸 녹취 출처. 없으면 음성 인식 모델 이름. */
+  transcriptSource?: string;
 }): Promise<Feedback> {
-  const { lesson, segments, durationSec, timed } = input;
-  const system = systemPrompt();
-  const user = lessonPrompt(lesson, segments, durationSec, timed);
+  const { lesson, segments, durationSec, timed, mode = "mock", transcriptSource } = input;
+  const system = systemPrompt(mode);
+  const user = lessonPrompt(lesson, segments, durationSec, timed, mode);
 
   await input.onStage("score");
   let draft = await chat<Draft>([{ role: "system", content: system }, { role: "user", content: user }], "lesson_feedback", draftSchema);
@@ -201,7 +221,7 @@ export async function writeFeedback(input: {
     );
     review = await reviewDraft(draft, user);
   }
-  return toFeedback(draft, review, { lesson, segments, durationSec, timed });
+  return toFeedback(draft, review, { lesson, segments, durationSec, timed, mode, transcriptSource });
 }
 
 async function reviewDraft(draft: Draft, user: string): Promise<Review> {
@@ -228,7 +248,14 @@ ${checklist}`,
 const NO_EVIDENCE = "녹취에서 근거 발언을 확인하지 못해 점수를 매기지 않았어요.";
 
 /** 모델 응답을 화면용 피드백으로 바꾼다. 녹취에 없는 근거는 버리고, 근거가 하나도 없는 점수는 판단 불가로 돌린다. */
-export function toFeedback(draft: Draft, review: Review, ctx: { lesson: Lesson; segments: Segment[]; durationSec: number; timed: boolean }): Feedback {
+/** 정식 차시는 "N차시", 그 밖의 지도안(no 0)은 제목으로 부른다. */
+const lessonLabel = (l: Lesson) => (l.no > 0 ? `${l.no}차시` : `「${l.title}」`);
+
+export function toFeedback(
+  draft: Draft,
+  review: Review,
+  ctx: { lesson: Lesson; segments: Segment[]; durationSec: number; timed: boolean; mode?: LessonMode; transcriptSource?: string },
+): Feedback {
   const { segments, durationSec } = ctx;
   const byId = new Map(draft.criteria.map((c) => [c.id, c]));
   const criteria: Record<string, CriterionResult> = {};
@@ -276,7 +303,7 @@ export function toFeedback(draft: Draft, review: Review, ctx: { lesson: Lesson; 
   const passed = review.items.filter((i) => i.passed).length;
   const { model, transcribeModel } = aiConfig();
   return {
-    basis: `녹화 음성을 글로 옮긴 기록(${segments.length}문장, ${transcribeModel})과 ${ctx.lesson.no}차시 지도안을 바탕으로 ${model}이 공통 루브릭 13개 기준에 따라 채점했어요. 영상 속 몸짓과 표정은 반영하지 않았어요.${ctx.timed ? "" : " 음성 인식 모델이 시각을 주지 않아 장면 시각이 정확하지 않아요."}`,
+    basis: `${ctx.mode === "live" ? "실제 수업 녹음" : "녹화 음성"}을 글로 옮긴 기록(${segments.length}문장, ${ctx.transcriptSource ?? transcribeModel})과 ${lessonLabel(ctx.lesson)} 지도안을 바탕으로 ${model}이 공통 루브릭 13개 기준에 따라 채점했어요. 영상 속 몸짓과 표정은 반영하지 않았어요.${ctx.timed ? "" : " 음성 인식 모델이 시각을 주지 않아 장면 시각이 정확하지 않아요."}`,
     review: { status: "reviewed", checklistPassed: passed, notes: review.items },
     criteria,
     strengths,
