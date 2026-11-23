@@ -130,7 +130,7 @@ const draftSchema = {
   },
 };
 
-type Draft = {
+export type Draft = {
   criteria: { id: string; score: number | null; reason: string; evidence: { time: string; quote: string }[]; planCheck: { step: string; planned: string; observed: string } | null; nextAction: string }[];
   strengths: { time: string; quote: string; text: string }[];
   improvements: { time: string; quote: string; text: string; suggestion: string }[];
@@ -154,7 +154,7 @@ const reviewSchema = {
   },
 };
 
-type Review = { items: { name: string; passed: boolean; comment: string }[] };
+export type Review = { items: { name: string; passed: boolean; comment: string }[] };
 
 const isReasoningModel = (m: string) => /^(gpt-5|o\d)/.test(m) && !m.includes("chat");
 
@@ -222,6 +222,11 @@ export async function writeFeedback(input: {
     review = await reviewDraft(draft, user);
   }
   return toFeedback(draft, review, { lesson, segments, durationSec, timed, mode, transcriptSource });
+}
+
+/** 사람이 고친 피드백(초안 형식)을 같은 검토 체크리스트로 다시 확인한다. 부스 시연 자료처럼 손본 결과를 검증할 때 쓴다. */
+export function reviewEditedDraft(input: { lesson: Lesson; segments: Segment[]; durationSec: number; timed: boolean; mode?: LessonMode; draft: Draft }): Promise<Review> {
+  return reviewDraft(input.draft, lessonPrompt(input.lesson, input.segments, input.durationSec, input.timed, input.mode));
 }
 
 async function reviewDraft(draft: Draft, user: string): Promise<Review> {

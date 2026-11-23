@@ -11,6 +11,7 @@ const NAV = [
   { href: "/lectures", label: "표준 강의", icon: "video" },
   { href: "/practice", label: "모의수업", icon: "mic" },
   { href: "/feedback", label: "AI 피드백", icon: "spark" },
+  { href: "/booth", label: "부스 운영", icon: "target" },
 ];
 
 export type SidebarViewer = { name: string; role: "admin" | "instructor"; local?: boolean } | null;
