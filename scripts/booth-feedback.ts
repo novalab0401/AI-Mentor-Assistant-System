@@ -1,6 +1,6 @@
 // 부스 시연(레이저 챌린지 3분 수업)의 AI 피드백을 미리 만들어 둔다. 부스 화면은 이 결과를 "실시간으로 분석하는 것처럼" 보여 준다.
 //
-// 실행: npx vite-node --config vitest.config.ts scripts/booth-feedback.ts [-- --regen]
+// 실행: npx vite-node --config vitest.config.mts scripts/booth-feedback.ts [-- --regen]
 // 1) AI 원본: content/booth/laser-demo.json(시연 대본을 시각별로 옮긴 연출 녹취)을 실제 채점 파이프라인에 넣은 결과
 //    → laser-demo-feedback.raw.json. 이미 있으면 다시 만들지 않는다(--regen이면 다시 만든다).
 // 2) 사람 수정: laser-demo-curation.json의 점수·문구를 원본 위에 덮는다(대본이 의도한 초보 강사 모습에 맞춤).

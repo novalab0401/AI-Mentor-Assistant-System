@@ -91,7 +91,7 @@ EVAL_MODELS=gpt-4o-mini,gpt-5.4-mini npm run eval:ai  # 여러 모델 비교, �
 - `laser-demo-curation.json`: 대본이 의도한 초보 강사 모습(03 AI 음성행동 피드백 명세서)과 어긋난 점수를 녹취 근거로 고친 부분
 - `laser-demo-feedback.json`: 고친 결과를 AI 검토 체크리스트로 다시 확인한 최종본. 화면이 이 파일을 쓴다
 
-대본이나 수정 내용을 바꾸면 `OPENAI_MODEL=gpt-5.4 npx vite-node --config vitest.config.ts scripts/booth-feedback.ts`로 최종본을 다시 만든다(`-- --regen`이면 AI 원본부터).
+대본이나 수정 내용을 바꾸면 `OPENAI_MODEL=gpt-5.4 npx vite-node --config vitest.config.mts scripts/booth-feedback.ts`로 최종본을 다시 만든다(`-- --regen`이면 AI 원본부터).
 
 ## 아직 안 된 것
 

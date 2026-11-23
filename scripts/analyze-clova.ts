@@ -1,6 +1,6 @@
 // 클로바노트로 받아 적은 실제 수업 녹취(txt)를 Nova Lab 피드백으로 분석한다.
 //
-// 실행: npx vite-node --config vitest.config.ts scripts/analyze-clova.ts -- <녹취.txt> [--redact 이름1,이름2] [--dry]
+// 실행: npx vite-node --config vitest.config.mts scripts/analyze-clova.ts -- <녹취.txt> [--redact 이름1,이름2] [--dry]
 // --dry: OpenAI로 보내지 않고 변환 결과(지도안·녹취)만 출력한다.
 //
 // - txt 앞부분: "참석자 N mm:ss" 다음 줄들이 발언. "clovanote.naver.com" 줄에서 녹취가 끝난다.
