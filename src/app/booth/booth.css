@@ -143,44 +143,6 @@
   font-size: 13px;
   color: var(--color-ter);
 }
-.bt-rec-btn {
-  height: 64px;
-  padding: 0 34px 0 28px;
-  border-radius: 999px;
-  background: var(--color-ink);
-  color: #fff;
-  font-size: 18px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.18);
-  transition: transform 0.15s ease;
-}
-.bt-rec-btn:hover {
-  transform: translateY(-1px);
-}
-.bt-rec-btn:active {
-  transform: scale(0.98);
-}
-.bt-rec-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--miss);
-  box-shadow: 0 0 0 0 rgba(229, 83, 75, 0.6);
-  animation: bt-pulse 1.6s ease-out infinite;
-}
-@keyframes bt-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(229, 83, 75, 0.55);
-  }
-  100% {
-    box-shadow: 0 0 0 12px rgba(229, 83, 75, 0);
-  }
-}
-
 /* ---------- 녹음 중 ---------- */
 .bt-live-head {
   display: flex;
@@ -200,106 +162,6 @@
   display: flex;
   align-items: center;
   gap: 8px;
-}
-.bt-rec {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 14px;
-  border-radius: 10px;
-  background: #fff4f3;
-  color: var(--miss);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-.bt-rec i {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--miss);
-  animation: bt-blink 1.2s steps(2, start) infinite;
-}
-.bt-rec b {
-  color: var(--color-ink);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0;
-}
-.bt-rec b small {
-  color: var(--color-ter);
-  font-weight: 400;
-  font-size: 12px;
-}
-.bt-rec.off {
-  background: var(--color-side);
-  color: var(--color-sub);
-}
-.bt-rec.off i {
-  animation: none;
-  background: var(--color-ter);
-}
-@keyframes bt-blink {
-  to {
-    visibility: hidden;
-  }
-}
-.bt-seg {
-  display: inline-flex;
-  border: 1px solid var(--color-line);
-  border-radius: 10px;
-  overflow: hidden;
-  height: 38px;
-}
-.bt-seg button {
-  padding: 0 11px;
-  font-size: 12.5px;
-  color: var(--color-sub);
-  cursor: pointer;
-}
-.bt-seg button[aria-pressed="true"] {
-  background: var(--color-tint);
-  color: var(--color-brand-dark);
-  font-weight: 600;
-}
-.bt-progress {
-  margin-top: 18px;
-  display: flex;
-  gap: 4px;
-}
-.bt-progress > div {
-  position: relative;
-}
-.bt-progress > div::before {
-  content: "";
-  display: block;
-  height: 5px;
-  border-radius: 3px;
-  background: var(--color-line);
-}
-.bt-progress i {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 5px;
-  border-radius: 3px;
-  background: var(--color-brand);
-  transform-origin: left;
-}
-.bt-progress span {
-  display: block;
-  margin-top: 6px;
-  font-size: 11.5px;
-  color: var(--color-ter);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.bt-progress .on span {
-  color: var(--color-brand-dark);
-  font-weight: 600;
 }
 .bt-live-grid {
   margin-top: 18px;
@@ -367,7 +229,7 @@
   line-height: 1.6;
   color: var(--color-ink);
 }
-.bt-line:last-of-type {
+.bt-line.cur {
   background: var(--color-tint);
 }
 .bt-caret {
@@ -411,29 +273,6 @@
   flex-direction: column;
   gap: 12px;
 }
-.bt-mic-state {
-  margin-left: auto;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: var(--color-ter);
-}
-.bt-mic-state.on {
-  color: var(--hit);
-}
-.bt-wave {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-.bt-wave i {
-  flex: 1;
-  height: 100%;
-  border-radius: 3px;
-  background: var(--color-brand);
-  transform-origin: center;
-  transition: transform 70ms linear;
-}
 .bt-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -476,20 +315,12 @@
   scrollbar-width: thin;
 }
 .bt-notes li {
-  border-left: 3px solid var(--color-brand);
   background: var(--color-side);
-  border-radius: 4px 10px 10px 4px;
-  padding: 8px 10px;
+  border-radius: 10px;
+  padding: 9px 12px;
   animation: bt-in 0.35s ease-out;
 }
-.bt-notes li.warn {
-  border-left-color: var(--mid);
-}
-.bt-notes li.good {
-  border-left-color: var(--hit);
-}
 .bt-notes li.bt-empty {
-  border: 0;
   background: none;
   padding: 0;
 }
@@ -517,6 +348,220 @@
   color: var(--color-ter);
 }
 
+/* ---------- 녹음 파일·파형 ---------- */
+.bt-file-card {
+  margin-top: 24px;
+  padding: 14px 18px 16px;
+}
+.bt-file {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--color-sub);
+  flex-wrap: wrap;
+}
+.bt-file b {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+.bt-file-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.bt-pos {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+.bt-pos small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-ter);
+}
+.bt-pos em {
+  font-style: normal;
+  margin-left: 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-brand-dark);
+  background: var(--color-tint);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+.bt-wave {
+  position: relative;
+  margin-top: 12px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.bt-wave i {
+  flex: 1;
+  height: 100%;
+  border-radius: 2px;
+  background: #d9dbe2;
+  transform-origin: center;
+}
+.bt-wave i.on {
+  background: var(--color-brand);
+}
+.bt-head {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background: var(--color-ink);
+  border-radius: 1px;
+}
+.bt-progress {
+  margin-top: 8px;
+  display: flex;
+}
+.bt-progress > div {
+  border-top: 2px solid var(--color-line);
+  padding-top: 5px;
+  min-width: 0;
+}
+.bt-progress > div + div {
+  border-left: 1px solid var(--color-line);
+}
+.bt-progress span {
+  display: block;
+  padding-left: 6px;
+  font-size: 11.5px;
+  color: var(--color-ter);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bt-progress .past {
+  border-top-color: var(--color-brand-soft);
+}
+.bt-progress .on {
+  border-top-color: var(--color-brand);
+}
+.bt-progress .on span {
+  color: var(--color-brand-dark);
+  font-weight: 600;
+}
+.bt-go-btn {
+  height: 60px;
+  padding: 0 34px 0 28px;
+  border-radius: 999px;
+  background: var(--color-brand);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(98, 71, 217, 0.25);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.bt-go-btn:hover {
+  background: var(--color-brand-dark);
+  transform: translateY(-1px);
+}
+.bt-go-btn:active {
+  transform: scale(0.98);
+}
+
+/* ---------- 분석 단계(오른쪽 위) ---------- */
+.bt-pipe {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas: "steps stop" "bar stop";
+  column-gap: 14px;
+  row-gap: 8px;
+  align-items: center;
+}
+.bt-pipe ol {
+  grid-area: steps;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 4px;
+}
+.bt-pipe li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--color-ter);
+  padding: 4px 9px 4px 5px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.bt-pipe li span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-line);
+  display: grid;
+  place-items: center;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.bt-pipe li.done {
+  color: var(--color-sub);
+}
+.bt-pipe li.done span {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: #fff;
+}
+.bt-pipe li.now {
+  background: var(--color-tint);
+  color: var(--color-brand-dark);
+  font-weight: 600;
+}
+.bt-pipe li.now span {
+  border-color: var(--color-brand);
+  border-top-color: transparent;
+  font-size: 0;
+  animation: bt-spin 0.9s linear infinite;
+}
+.bt-pipe-bar {
+  grid-area: bar;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-line);
+  overflow: hidden;
+}
+.bt-pipe-bar i {
+  display: block;
+  height: 100%;
+  background: var(--color-brand);
+  border-radius: 2px;
+  transition: width 0.2s linear;
+}
+.bt-stop {
+  grid-area: stop;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  color: var(--color-ink);
+  font-size: 13.5px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.bt-stop:hover {
+  background: var(--color-side);
+}
+
 /* ---------- 분석 중 ---------- */
 .bt-analyze h1 {
   margin: 8px 0 0;
@@ -539,7 +584,7 @@
   border-radius: 3px;
 }
 .bt-analyze-grid {
-  margin-top: 28px;
+  margin-top: 24px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 400px;
   gap: 20px;
@@ -964,6 +1009,36 @@
   border-top: 1px dashed var(--hair);
   animation: bt-in 0.2s ease-out;
 }
+.rs .detail .levels {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.rs .detail .levels li {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--color-ter);
+}
+.rs .detail .levels li b {
+  font-weight: 600;
+}
+.rs .detail .levels li.got {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--brand);
+}
+.rs .detail .levels li.got b {
+  color: var(--brand-dark);
+}
+
 .rs .detail p {
   margin: 0 0 8px;
   font-size: 13px;

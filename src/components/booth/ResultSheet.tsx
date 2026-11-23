@@ -201,6 +201,14 @@ export function ResultSheet({ demo, result, rubric, onRestart }: BoothProps & { 
                             </button>
                             {isOpen && c && (
                               <div className="detail">
+                                <ol className="levels" aria-label="1~5점 수준">
+                                  {r.levels.map((lv, n) => (
+                                    <li key={n} className={r.score === n + 1 ? "got" : ""} aria-current={r.score === n + 1 ? "true" : undefined}>
+                                      <b>{n + 1}점</b>
+                                      {lv}
+                                    </li>
+                                  ))}
+                                </ol>
                                 <p>{c.reason}</p>
                                 {c.evidence.map((e) => (
                                   <blockquote key={e.time}>
