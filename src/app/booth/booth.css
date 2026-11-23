@@ -1529,3 +1529,103 @@
     animation: none;
   }
 }
+
+/* ---------- 분석 대기: 게임 소개 ---------- */
+.bt-game-intro {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+.bt-game-intro.alt {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+}
+.bt-shot {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #070b14;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.08), 0 14px 40px rgba(17, 24, 39, 0.16);
+}
+.bt-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.bt-how h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+.bt-how-lead {
+  margin: 8px 0 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--color-body);
+}
+.bt-how ol {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  counter-reset: how;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bt-how li {
+  counter-increment: how;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 12px;
+}
+.bt-how li::before {
+  content: counter(how);
+  grid-row: span 2;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-tint);
+  color: var(--color-brand-dark);
+  font-size: 13px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+}
+.bt-how li b {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.bt-how li span {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--color-sub);
+}
+.bt-cap {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-ter);
+}
+@media (max-width: 1100px) {
+  .bt-game-intro,
+  .bt-game-intro.alt {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bt-ready-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+.bt-go-sm {
+  height: 42px;
+  padding: 0 18px;
+  font-size: 14.5px;
+  flex: none;
+}

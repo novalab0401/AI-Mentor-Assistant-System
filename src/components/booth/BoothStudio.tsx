@@ -3,6 +3,7 @@
 // 부스 수업 시연 화면. 녹음된 3분 시연 수업을 불러와 분석하는 흐름으로 보여 준다.
 // 분석 대기 → 녹취 분석(녹음을 4배속으로 훑으며 음성 인식·게임 기록·장면 관찰) → 채점·검토 → 결과지.
 // 녹취와 결과는 미리 만든 자료(content/booth)를 시각에 맞춰 보여 준다. 마이크·카메라는 쓰지 않는다.
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { BoothDemoData, BoothProps } from "@/lib/booth";
 import { Icon } from "../Icon";
@@ -128,18 +129,57 @@ function ReadyView({ demo, onStart }: BoothProps & { onStart: () => void }) {
 
   return (
     <section className="bt-ready">
-      <p className="bt-eyebrow">
-        <Icon name="target" size={15} /> 부스 수업 시연
-      </p>
-      <h1>{demo.title}</h1>
+      <header className="bt-ready-head">
+        <div>
+          <p className="bt-eyebrow">
+            <Icon name="target" size={15} /> 부스 수업 시연
+          </p>
+          <h1>{demo.title}</h1>
+        </div>
+        <button type="button" className="bt-primary bt-go-sm" onClick={onStart}>
+          <Icon name="spark" size={15} /> 분석 시작
+        </button>
+      </header>
       <p className="bt-lead">
         {demo.subtitle} 녹음을 불러왔어요. 녹음을 처음부터 훑으며 강사의 말과 게임 기록을 맞춰 보고, 공통 루브릭 13개 기준으로 피드백을 만들어요.
       </p>
 
-      <div className="bt-card bt-file-card">
-        <FileInfo demo={demo} />
-        <Waveform demo={demo} at={0} />
-      </div>
+      <section className="bt-game-intro" aria-labelledby="game-h">
+        <figure className="bt-shot main">
+          <Image src="/booth/laser-home.webp" alt="레이저 챌린지 처음 화면. 레이저와 거울, 1·2·3 타깃, 쉬움·보통·어려움·마스터 난이도 카드" width={1600} height={900} unoptimized priority />
+        </figure>
+        <div className="bt-how">
+          <h2 id="game-h">레이저 챌린지</h2>
+          <p className="bt-how-lead">손을 거울처럼 기울여 레이저를 반사시키고, 색깔 타깃을 정해진 순서대로 맞히는 빛의 반사 게임이에요.</p>
+          <ol>
+            <li>
+              <b>난이도 고르기</b>
+              <span>손으로 카드를 1초 가리키면 시작해요. 시연은 MISSION 04 「빛의 미로」(타깃 4개 · 60초 · 6발)예요.</span>
+            </li>
+            <li>
+              <b>손가락으로 거울 각도 맞추기</b>
+              <span>손가락이 가리키는 방향이 거울 방향이에요. 왼손은 왼쪽 거울, 오른손은 오른쪽 거울을 움직여요.</span>
+            </li>
+            <li>
+              <b>주먹을 쥐어 발사</b>
+              <span>빨강 → 노랑 → 파랑 → 초록 순서로 맞히면 성공이에요. 순서가 틀리면 인정되지 않아요.</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section className="bt-game-intro alt" aria-label="배우는 원리">
+        <div className="bt-how">
+          <h2>배우는 원리 · 반사의 법칙</h2>
+          <p className="bt-how-lead">
+            빛은 거울에 들어온 각도(입사각)와 같은 각도(반사각)로 나가요. 거울 각도를 바꾸면 빛이 가는 방향이 바뀌니까, 빛의 경로를 미리 예측해야 타깃을 순서대로 맞힐 수 있어요.
+          </p>
+          <p className="bt-cap">오른쪽은 MISSION 04의 정답 경로예요. 거울 다섯 개를 지나는 한 줄기 빛이 네 타깃을 모두 순서대로 지나가요.</p>
+        </div>
+        <figure className="bt-shot">
+          <Image src="/booth/laser-mission04.webp" alt="MISSION 04 빛의 미로 정답 경로. 레이저가 거울 다섯 개에서 반사되며 빨강, 노랑, 파랑, 초록 타깃을 차례로 지난다" width={1600} height={900} unoptimized />
+        </figure>
+      </section>
 
       <div className="bt-ready-grid">
         <div className="bt-card">
@@ -160,8 +200,6 @@ function ReadyView({ demo, onStart }: BoothProps & { onStart: () => void }) {
               <li key={g}>{g}</li>
             ))}
           </ul>
-          <h2 className="mt">게임</h2>
-          <p className="bt-game">{demo.game}</p>
         </div>
       </div>
 
@@ -170,9 +208,6 @@ function ReadyView({ demo, onStart }: BoothProps & { onStart: () => void }) {
           <Icon name="spark" size={18} />
           분석 시작
         </button>
-        <p>
-          {mmss(demo.durationSec)} 녹음을 {SPEED}배속으로 훑어서 약 1분 걸려요 · <kbd>Enter</kbd>
-        </p>
       </div>
     </section>
   );

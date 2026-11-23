@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 test("부스 시연: 분석 시작 → 녹취 분석 → 결과지", async ({ page }) => {
   await page.goto("/booth");
-  await page.getByRole("button", { name: "분석 시작" }).click();
+  await page.getByRole("button", { name: "분석 시작" }).first().click();
   await expect(page.getByRole("button", { name: "중지" })).toBeVisible();
   await expect(page.locator(".bt-pipe li.now")).toHaveText(/녹취 분석/);
 
@@ -26,7 +26,7 @@ test("부스 시연: 분석 시작 → 녹취 분석 → 결과지", async ({ pa
 
 test("부스 시연: 중지하면 처음 화면으로", async ({ page }) => {
   await page.goto("/booth");
-  await page.getByRole("button", { name: "분석 시작" }).click();
+  await page.getByRole("button", { name: "분석 시작" }).first().click();
   await page.getByRole("button", { name: "중지" }).click();
-  await expect(page.getByRole("button", { name: "분석 시작" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "분석 시작" }).first()).toBeVisible();
 });
