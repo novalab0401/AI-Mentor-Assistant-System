@@ -804,10 +804,16 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* 기준 결과지(A4 794px)와 같은 비율: 본문 738px = 왼쪽 494 : 간격 16 : 오른쪽 228.
+   두 열은 같은 높이로 늘이고(stretch), 오른쪽 첫 상자는 왼쪽 표 윗선에, 마지막 상자는 왼쪽 마지막 칸 아랫선에 맞춘다. */
+.rs {
+  --rs-h2: 32px; /* 섹션 제목 높이 24 + 아래 여백 8 */
+}
 .rs .cols {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 270px;
-  gap: 20px;
+  grid-template-columns: minmax(0, 494fr) minmax(0, 228fr);
+  column-gap: 2.17%;
+  align-items: stretch;
 }
 .rs .main,
 .rs .aside {
@@ -816,8 +822,16 @@
   gap: 18px;
   min-width: 0;
 }
+.rs .main {
+  justify-content: space-between;
+}
+.rs .aside {
+  padding-top: var(--rs-h2);
+  justify-content: space-between;
+}
 .rs .sec h2 {
   margin: 0 0 8px;
+  height: 24px;
   font-size: 16px;
   font-weight: 700;
   display: flex;
