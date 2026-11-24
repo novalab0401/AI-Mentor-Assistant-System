@@ -805,7 +805,7 @@
   text-overflow: ellipsis;
 }
 /* 기준 결과지(A4 794px)와 같은 비율: 본문 738px = 왼쪽 494 : 간격 16 : 오른쪽 228.
-   두 열은 같은 높이로 늘이고(stretch), 오른쪽 첫 상자는 왼쪽 표 윗선에, 마지막 상자는 왼쪽 마지막 칸 아랫선에 맞춘다. */
+   오른쪽 첫 상자(수업 점수)는 왼쪽 루브릭 표 윗선에 맞추고, 나머지 상자는 촘촘하게 쌓는다. */
 .rs {
   --rs-h2: 32px; /* 섹션 제목 높이 24 + 아래 여백 8 */
 }
@@ -826,8 +826,8 @@
   justify-content: space-between;
 }
 .rs .aside {
-  padding-top: var(--rs-h2);
-  justify-content: space-between;
+  padding-top: var(--rs-h2); /* 수업 점수 상자를 왼쪽 루브릭 표 윗선에 맞춘다 */
+  gap: 12px; /* 나머지 상자는 아래로 벌리지 않고 촘촘하게 */
 }
 .rs .sec h2 {
   margin: 0 0 8px;

@@ -460,7 +460,7 @@ export function ResultSheet({ demo, result, rubric, onRestart }: BoothProps & { 
                 <li className="ai">
                   <b>4</b>
                   <span>
-                    루브릭 13개 항목 채점<small>{result.model} · 근거 발언 대조</small>
+                    루브릭 13개 항목 채점<small>AI 채점 · 근거 발언 대조</small>
                   </span>
                 </li>
                 <li className="ai">
