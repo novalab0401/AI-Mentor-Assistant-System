@@ -15,5 +15,6 @@ describe("부스 화면 낱말", () => {
     expect(boothWording("3분 부스 체험 수업 시연")).toBe("3분 부스 체험 수업");
     expect(boothWording("시연 강사")).toBe("담당 강사");
     expect(boothWording("다음 시연에서는")).toBe("다음 수업에서는");
+    expect(boothWording("말·쓰기·시연 등 다양한 참여 방식")).toBe("말·쓰기·발표 등 다양한 참여 방식");
   });
 });

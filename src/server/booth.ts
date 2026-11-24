@@ -12,6 +12,7 @@ export function boothWording(text: string): string {
   return text
     .replace(/녹취(와|를|는|가|로)?/g, (_, p?: string) => `음성 기록${p ? PARTICLE[p] : ""}`)
     .replace(/수업 시연/g, "수업")
+    .replace(/말·쓰기·시연/g, "말·쓰기·발표") // 공통 루브릭 문장(학생이 해 보이는 참여 방식)
     .replace(/시연 강사/g, "담당 강사")
     .replace(/시연/g, "수업");
 }
@@ -25,4 +26,6 @@ function reword<T>(value: T): T {
 }
 
 export const boothDemo = reword(demoJson as BoothDemoData);
+/** 부스 화면에 보일 공통 루브릭(수준 문장에도 같은 낱말 바꾸기 적용, 원본은 그대로). */
+export const boothRubric = <T>(items: T): T => reword(items);
 export const boothResult = reword(resultJson as unknown as BoothResult);
