@@ -1,6 +1,6 @@
 "use client";
 
-// 부스 시연 결과지. 모의수업 결과지(A4) 형식: 루브릭 항목 분석 · 근거 발언 타임라인 · AI 피드백 | 점수 · 점수 올리기 · 감점 · 분포 · 목표 · 과정.
+// AI 수업 코칭 리포트(부스 체험 수업). 모의수업 결과지(A4) 형식: 루브릭 항목 분석 · 근거 발언 타임라인 · AI 피드백 | 점수 · 점수 올리기 · 감점 · 분포 · 목표 · 과정.
 import { useEffect, useState } from "react";
 import type { BoothProps } from "@/lib/booth";
 import { Icon } from "../Icon";
@@ -108,13 +108,13 @@ export function ResultSheet({ demo, result, rubric, onRestart }: BoothProps & { 
         </button>
       </div>
 
-      <article className="sheet" aria-label="부스 시연 결과지">
+      <article className="sheet" aria-label="AI 수업 코칭 리포트">
         <header className="top">
           <div className="brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/nova-lab-mark.svg" alt="" />
             <h1>
-              <small>NOVA COACH</small>부스 시연 결과지
+              <small>NOVA COACH</small>AI 수업 코칭 리포트
             </h1>
           </div>
           <div className="org">
@@ -310,7 +310,7 @@ export function ResultSheet({ demo, result, rubric, onRestart }: BoothProps & { 
                   </ul>
                 </div>
                 <div>
-                  <h3>다음 시연에서 할 말</h3>
+                  <h3>다음 수업에서 할 말</h3>
                   <ul className="lst nx">
                     {result.next.map((n) => (
                       <li key={n.title}>
@@ -334,7 +334,7 @@ export function ResultSheet({ demo, result, rubric, onRestart }: BoothProps & { 
           <aside className="aside">
             <section className="score">
               <div className="hd">
-                시연 점수<span>100점 만점</span>
+                수업 점수<span>100점 만점</span>
               </div>
               <div className="bd">
                 <div className="big tnum">
@@ -428,7 +428,7 @@ export function ResultSheet({ demo, result, rubric, onRestart }: BoothProps & { 
             </section>
 
             <section className="box">
-              <h3>시연 학습 목표</h3>
+              <h3>수업 학습 목표</h3>
               <ol className="goals">
                 {demo.goals.map((g) => (
                   <li key={g}>{g}</li>
@@ -437,12 +437,12 @@ export function ResultSheet({ demo, result, rubric, onRestart }: BoothProps & { 
             </section>
 
             <section className="box">
-              <h3>결과지가 만들어진 과정</h3>
+              <h3>리포트가 만들어진 과정</h3>
               <ol className="flow">
                 <li>
                   <b>1</b>
                   <span>
-                    수업 녹음<small>부스에서 3분 시연</small>
+                    수업 녹음<small>부스에서 3분 체험 수업</small>
                   </span>
                 </li>
                 <li>

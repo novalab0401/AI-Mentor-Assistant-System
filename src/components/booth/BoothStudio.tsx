@@ -1,8 +1,8 @@
 "use client";
 
-// 부스 수업 시연 화면. 녹음된 3분 시연 수업을 불러와 분석하는 흐름으로 보여 준다.
-// 분석 대기 → 녹취 분석(녹음을 4배속으로 훑으며 음성 인식·게임 기록·장면 관찰) → 채점·검토 → 결과지.
-// 녹취와 결과는 미리 만든 자료(content/booth)를 시각에 맞춰 보여 준다. 마이크·카메라는 쓰지 않는다.
+// 부스 수업 화면. 녹음된 3분 체험 수업을 불러와 분석하는 흐름으로 보여 준다.
+// 분석 대기 → 음성 분석(녹음을 4배속으로 훑으며 음성 인식·게임 기록·장면 관찰) → 채점·검토 → 결과지.
+// 음성 기록과 결과는 미리 만든 자료(content/booth)를 시각에 맞춰 보여 준다. 마이크·카메라는 쓰지 않는다.
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { BoothDemoData, BoothProps } from "@/lib/booth";
@@ -13,10 +13,10 @@ type Phase = "ready" | "live" | "analyzing" | "done";
 
 const SPEED = 4; // 녹음을 훑는 속도(배속)
 const TYPE_CPS = 11; // 받아 적는 속도(글자/초, 녹음 시간 기준)
-const FILE_NAME = "laser-challenge-시연.m4a";
+const FILE_NAME = "laser-challenge-수업.m4a";
 
-/** 화면 위쪽에 보이는 전체 분석 단계. 녹취 분석은 LiveView, 나머지는 AnalyzingView가 진행한다. */
-const PIPELINE = ["녹취 분석", "루브릭 채점", "근거 대조", "자체 검토", "결과지"] as const;
+/** 화면 위쪽에 보이는 전체 분석 단계. 음성 분석은 LiveView, 나머지는 AnalyzingView가 진행한다. */
+const PIPELINE = ["음성 분석", "루브릭 채점", "근거 대조", "자체 검토", "리포트"] as const;
 
 const mmss = (sec: number) => {
   const s = Math.max(0, Math.floor(sec));
@@ -113,7 +113,7 @@ function Pipeline({ step, pct, onStop }: { step: number; pct: number; onStop: ()
   );
 }
 
-/** 전체 진행률: 녹취 분석 60%, 나머지 단계 40%. */
+/** 전체 진행률: 음성 분석 60%, 나머지 단계 40%. */
 const overall = (phase: "live" | "analyzing", p: number) => (phase === "live" ? p * 60 : 60 + p * 40);
 
 // ---------------- 분석 대기 ----------------
@@ -132,7 +132,7 @@ function ReadyView({ demo, onStart }: BoothProps & { onStart: () => void }) {
       <header className="bt-ready-head">
         <div>
           <p className="bt-eyebrow">
-            <Icon name="target" size={15} /> 부스 수업 시연
+            <Icon name="target" size={15} /> 부스 체험 수업
           </p>
           <h1>{demo.title}</h1>
         </div>
@@ -154,7 +154,7 @@ function ReadyView({ demo, onStart }: BoothProps & { onStart: () => void }) {
           <ol>
             <li>
               <b>난이도 고르기</b>
-              <span>손으로 카드를 1초 가리키면 시작해요. 시연은 MISSION 04 「빛의 미로」(타깃 4개 · 60초 · 6발)예요.</span>
+              <span>손으로 카드를 1초 가리키면 시작해요. 이번 수업은 MISSION 04 「빛의 미로」(타깃 4개 · 60초 · 6발)예요.</span>
             </li>
             <li>
               <b>손가락으로 거울 각도 맞추기</b>
@@ -213,7 +213,7 @@ function ReadyView({ demo, onStart }: BoothProps & { onStart: () => void }) {
   );
 }
 
-// ---------------- 녹취 분석(녹음을 훑으며) ----------------
+// ---------------- 음성 분석(녹음을 훑으며) ----------------
 
 function LiveView({ demo, onFinish, onStop }: BoothProps & { onFinish: () => void; onStop: () => void }) {
   const [clock, setClock] = useState(0);
@@ -317,7 +317,7 @@ function LiveView({ demo, onFinish, onStop }: BoothProps & { onFinish: () => voi
       <div className="bt-live-grid">
         <div className="bt-card bt-feed-card">
           <h2>
-            녹취
+            수업 음성 기록
             <span className="bt-badge">
               <i className={writing ? "on" : ""} aria-hidden />
               {p >= 1 ? "음성 인식 완료" : writing ? "음성 인식 중" : "다음 발화 찾는 중"}
@@ -401,10 +401,10 @@ function AnalyzingView({ result, rubric, checklist, onDone, onStop }: BoothProps
   const evidence = Object.values(fb.criteria).reduce((a, c) => a + c.evidence.length, 0);
   // PIPELINE[1..4]와 같은 순서
   const steps = [
-    { label: "공통 루브릭 13개 항목 채점", detail: "지도안·녹취를 맞대어 점수와 근거 작성", ms: 3900 },
-    { label: "근거 발언을 녹취와 대조", detail: `근거 ${evidence}개 모두 녹취에서 확인`, ms: 1500 },
+    { label: "공통 루브릭 13개 항목 채점", detail: "지도안·음성 기록을 맞대어 점수와 근거 작성", ms: 3900 },
+    { label: "근거 발언을 음성 기록과 대조", detail: `근거 ${evidence}개 모두 음성 기록에서 확인`, ms: 1500 },
     { label: "AI 자체 검토", detail: `체크리스트 ${checklist.length}개 확인`, ms: 2600 },
-    { label: "결과지 작성", detail: "점수·근거·다음 행동 정리", ms: 1100 },
+    { label: "리포트 작성", detail: "점수·근거·다음 행동 정리", ms: 1100 },
   ];
   const [elapsed, setElapsed] = useState(0);
   const total = steps.reduce((a, s) => a + s.ms, 0);
@@ -449,7 +449,7 @@ function AnalyzingView({ result, rubric, checklist, onDone, onStop }: BoothProps
           <p className="bt-eyebrow">
             <Icon name="spark" size={15} /> 녹음 분석 중
           </p>
-          <h1>{cur === -1 ? "결과지를 열고 있어요" : `${steps[cur].label} 중…`}</h1>
+          <h1>{cur === -1 ? "리포트를 열고 있어요" : `${steps[cur].label} 중…`}</h1>
         </div>
         <Pipeline step={cur === -1 ? 4 : cur + 1} pct={overall("analyzing", p)} onStop={onStop} />
       </header>
@@ -461,7 +461,7 @@ function AnalyzingView({ result, rubric, checklist, onDone, onStop }: BoothProps
               <Icon name="check" size={13} strokeWidth={2.4} />
             </span>
             <div>
-              <b>녹취 분석</b>
+              <b>음성 분석</b>
               <small>음성 인식 · 화자 구분 · 게임 기록 연결 · 장면 관찰</small>
             </div>
           </li>

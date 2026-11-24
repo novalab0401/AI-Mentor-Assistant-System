@@ -1,8 +1,28 @@
-// 부스 시연 자료. 시연 대본(content/booth/laser-demo.json)과 미리 만든 AI 피드백(laser-demo-feedback.json).
+// 부스 수업 자료. 수업 대본(content/booth/laser-demo.json)과 미리 만든 AI 피드백(laser-demo-feedback.json).
 // 피드백은 scripts/booth-feedback.ts로 만든다(실제 채점 파이프라인 + 사람 수정 + AI 재검토).
+// 화면에는 "시연"·"녹취" 대신 "수업"·"음성 기록"으로 보여 준다(원본 파일은 그대로 둔다).
 import demoJson from "../../content/booth/laser-demo.json";
 import resultJson from "../../content/booth/laser-demo-feedback.json";
 import type { BoothDemoData, BoothResult } from "@/lib/booth";
 
-export const boothDemo = demoJson as BoothDemoData;
-export const boothResult = resultJson as unknown as BoothResult;
+// "녹취"는 받침이 없고 "음성 기록"은 받침이 있어서 뒤에 붙는 조사를 함께 바꾼다
+const PARTICLE: Record<string, string> = { 와: "과", 를: "을", 는: "은", 가: "이", 로: "으로" };
+
+export function boothWording(text: string): string {
+  return text
+    .replace(/녹취(와|를|는|가|로)?/g, (_, p?: string) => `음성 기록${p ? PARTICLE[p] : ""}`)
+    .replace(/수업 시연/g, "수업")
+    .replace(/시연 강사/g, "담당 강사")
+    .replace(/시연/g, "수업");
+}
+
+/** 객체 안의 모든 문자열에 boothWording을 적용한 복사본. */
+function reword<T>(value: T): T {
+  if (typeof value === "string") return boothWording(value) as T;
+  if (Array.isArray(value)) return value.map(reword) as T;
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, reword(v)])) as T;
+  return value;
+}
+
+export const boothDemo = reword(demoJson as BoothDemoData);
+export const boothResult = reword(resultJson as unknown as BoothResult);

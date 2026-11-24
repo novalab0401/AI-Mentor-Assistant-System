@@ -1515,7 +1515,7 @@
   padding-top: 6px;
 }
 
-@media (max-width: 1100px) {
+@media screen and (max-width: 1100px) {
   .bt-live-grid,
   .bt-analyze-grid,
   .rs .cols {
@@ -1529,18 +1529,60 @@
     transition: none !important;
   }
 }
+/* 인쇄·PDF: A4 한 장. 리포트를 1180px 폭으로 배치한 뒤 A4 폭(794px)에 맞춰 줄인다(794 / 1180).
+   A4 비율이면 1180px 폭에서 높이 1669px까지 한 장에 들어간다. */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  body {
+    display: block !important;
+    min-height: 0 !important;
+  }
   aside.sticky,
-  .rs-actions {
+  .rs-actions,
+  nextjs-portal {
     display: none !important;
   }
   main {
     padding: 0 !important;
   }
+  main > div {
+    max-width: none !important;
+  }
+  .booth * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   .rs .sheet {
-    box-shadow: none;
+    width: 1180px;
+    zoom: 0.6729;
+    margin: 0;
     border: 0;
+    border-radius: 0;
+    box-shadow: none;
     animation: none;
+    break-inside: avoid;
+    min-height: 1650px; /* A4 한 장 높이(1669)를 채우되 반올림으로 넘치지 않게 조금 덜 */
+  }
+  .rs .cols {
+    flex: 1;
+  }
+  .rs .sec h2 em {
+    display: none; /* 화면에서만 쓰는 안내 */
+  }
+  /* 펼친 항목은 인쇄하지 않는다(한 장을 넘지 않게) */
+  .rs .detail {
+    display: none;
+  }
+  .rs .rr:hover,
+  .rs .rrw.open .rr {
+    background: none;
   }
 }
 
@@ -1624,7 +1666,7 @@
   line-height: 1.6;
   color: var(--color-ter);
 }
-@media (max-width: 1100px) {
+@media screen and (max-width: 1100px) {
   .bt-game-intro,
   .bt-game-intro.alt {
     grid-template-columns: 1fr;
